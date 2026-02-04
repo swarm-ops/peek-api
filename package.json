@@ -1,0 +1,35 @@
+{
+  "name": "api-capture",
+  "version": "0.1.0",
+  "description": "Discover internal APIs from any website. Captures XHR/fetch calls, extracts auth headers, outputs structured endpoint catalogs.",
+  "type": "module",
+  "bin": {
+    "api-capture": "./bin/cli.js"
+  },
+  "scripts": {
+    "start": "node bin/cli.js"
+  },
+  "keywords": [
+    "api",
+    "capture",
+    "discover",
+    "network",
+    "xhr",
+    "fetch",
+    "browser",
+    "playwright",
+    "cdp",
+    "reverse-engineer",
+    "api-discovery"
+  ],
+  "author": "Alex Hillman",
+  "license": "MIT",
+  "dependencies": {
+    "playwright": "^1.50.0",
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
