@@ -15,11 +15,14 @@ npx api-capture https://example.com
 ## Quick Start
 
 ```bash
-# Capture APIs from a public site
-api-capture https://example.com
+# 1. Save a login session (opens a browser for you to log in)
+api-capture login https://linkedin.com/login --stealth
 
-# Authenticated capture with saved browser session
-api-capture https://linkedin.com/feed --session ./session.json --stealth
+# 2. Capture authenticated API traffic using the saved session
+api-capture https://linkedin.com/feed --session ./linkedin.com-session.json --stealth
+
+# Capture APIs from a public site (no login needed)
+api-capture https://example.com
 
 # Connect to already-running Chrome
 api-capture https://app.example.com --cdp ws://localhost:9222/devtools/browser/abc123
@@ -100,38 +103,37 @@ Full endpoint data including method, URL, params, headers, and POST bodies.
 6. Deduplicates endpoints by method + path
 7. Generates a structured report with endpoint catalog and auth info
 
-## Session Files
+## Login & Sessions
 
-To capture APIs from authenticated sites, you need a Playwright storage state file. This is a JSON file containing cookies and localStorage from a logged-in browser session.
+Most interesting APIs require authentication. The `login` command handles this:
 
-### Creating a Session File
+```bash
+# Opens a browser window - log in manually, then press Enter
+api-capture login https://linkedin.com/login --stealth
 
-The easiest way is to save your browser state after logging in:
-
-```javascript
-// save-session.js
-import { chromium } from 'playwright';
-
-const browser = await chromium.launch({ headless: false });
-const context = await browser.newContext();
-const page = await context.newPage();
-
-await page.goto('https://example.com/login');
-// Log in manually in the browser window...
-// Then press Enter in the terminal when done
-
-await new Promise(resolve => {
-  process.stdin.once('data', resolve);
-  console.log('Log in, then press Enter to save session...');
-});
-
-await context.storageState({ path: 'session.json' });
-await browser.close();
+# Session is saved to linkedin.com-session.json
+# Now use it for captures:
+api-capture https://linkedin.com/feed --session ./linkedin.com-session.json --stealth
 ```
+
+The login flow:
+1. Opens a visible Chrome window pointed at the URL you specify
+2. You log in manually -- handle 2FA, captchas, security checks at your own pace
+3. Come back to the terminal and press Enter
+4. Cookies and localStorage are saved to a JSON file (Playwright storage state format)
+
+Sessions typically last 7-30 days before you need to re-login.
+
+### Login Options
+
+| Option | Description |
+|--------|-------------|
+| `--stealth` | Use stealth mode (recommended for LinkedIn, Instagram, etc.) |
+| `-o, --output <file>` | Custom session file path (default: `{domain}-session.json`) |
 
 ### Stealth Mode
 
-Some sites (LinkedIn, Instagram, etc.) detect and block browser automation. The `--stealth` flag uses [puppeteer-extra-plugin-stealth](https://github.com/nicedayfor/puppeteer-extra-plugin-stealth) to avoid detection.
+Some sites (LinkedIn, Instagram, etc.) detect and block browser automation. The `--stealth` flag uses [puppeteer-extra-plugin-stealth](https://github.com/nicedayfor/puppeteer-extra-plugin-stealth) to avoid detection. Use it for both `login` and `capture` commands.
 
 ## Filtering
 
