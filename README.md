@@ -4,6 +4,27 @@ Discover internal APIs from any website. Monitors browser network traffic, captu
 
 Like opening Chrome DevTools Network tab, but automated and scriptable.
 
+> Built on the ideas from [Unbrowse](https://github.com/lekt9/unbrowse-openclaw) by [@nicedayfor](https://github.com/nicedayfor). Their work on API discovery for AI agents is what inspired this project. This is a standalone reimplementation with no framework dependencies -- the core capture/extract/report workflow works with any agent platform, any automation stack, or just on its own from the command line.
+>
+> <details>
+> <summary>How this differs from Unbrowse</summary>
+>
+> Unbrowse is a plugin for the [OpenClaw](https://github.com/nicedayfor/openclaw) agent framework. It's tightly integrated -- it uses OpenClaw's browser service, generates OpenClaw-specific "skills", and requires the OpenClaw runtime.
+>
+> `api-capture` extracts the same core idea (browse a site, capture API traffic, extract auth, catalog endpoints) and makes it a standalone CLI:
+>
+> | | Unbrowse | api-capture |
+> |---|---|---|
+> | **Runtime** | Requires OpenClaw agent framework | Standalone Node.js CLI |
+> | **Browser** | OpenClaw's managed browser service | Playwright (local or remote CDP) |
+> | **Auth** | Managed by OpenClaw | `login` command saves portable session files |
+> | **Bot detection** | OpenClaw handles it | Built-in stealth mode via `--stealth` |
+> | **Output** | OpenClaw skill definitions | Markdown report + JSON (use with anything) |
+> | **Agent integration** | OpenClaw only | Agent-agnostic (works with Claude, GPT, etc.) |
+>
+> If you're using OpenClaw, use Unbrowse. If you want API capture without framework lock-in, use this.
+> </details>
+
 ## Install
 
 ```bash
@@ -151,10 +172,6 @@ Only XHR/fetch requests and URLs containing `/api/`, `/graphql/`, or `/rest/` ar
 - **AI agent tooling** - Generate API catalogs that agents can call
 - **Reverse engineering** - Understand how a web app communicates with its backend
 - **Monitoring** - Track what APIs are called during specific user flows
-
-## Inspired By
-
-[Unbrowse](https://github.com/lekt9/unbrowse-openclaw) - an API discovery tool for the OpenClaw agent framework. This project provides the same core functionality as a standalone CLI with no framework dependencies.
 
 ## License
 
