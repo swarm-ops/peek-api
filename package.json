@@ -1,10 +1,10 @@
 {
-  "name": "api-capture",
-  "version": "0.1.0",
-  "description": "Discover internal APIs from any website. Captures XHR/fetch calls, extracts auth headers, outputs structured endpoint catalogs.",
+  "name": "peek-api",
+  "version": "0.2.0",
+  "description": "Discover and call internal APIs from any website. Captures XHR/fetch calls, extracts auth headers, outputs structured endpoint catalogs, and makes direct HTTP calls with session cookies.",
   "type": "module",
   "bin": {
-    "api-capture": "./bin/cli.js"
+    "peek-api": "./bin/cli.js"
   },
   "scripts": {
     "start": "node bin/cli.js"
@@ -20,7 +20,9 @@
     "playwright",
     "cdp",
     "reverse-engineer",
-    "api-discovery"
+    "api-discovery",
+    "session-cookie",
+    "direct-http"
   ],
   "author": "Alex Hillman",
   "license": "MIT",
