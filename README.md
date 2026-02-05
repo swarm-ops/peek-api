@@ -165,6 +165,20 @@ The tool automatically filters out:
 
 Only XHR/fetch requests and URLs containing `/api/`, `/graphql/`, or `/rest/` are captured.
 
+## When Browser Capture Doesn't Work
+
+Some sites (notably Instagram) block all automated browsers -- even stealth mode with real Chrome. In these cases, the session file saved by `api-capture login` is still valuable: you can make direct HTTP requests using the cookies.
+
+```bash
+# 1. Login normally to get session cookies
+api-capture login https://instagram.com/accounts/login --stealth
+
+# 2. Use the session file for direct API calls (no browser needed)
+# The session JSON contains cookies you can use with curl, fetch, etc.
+```
+
+This "direct HTTP" approach bypasses browser detection entirely. The session file format (Playwright storage state) contains all cookies and localStorage needed to authenticate API requests from any HTTP client.
+
 ## Use Cases
 
 - **API discovery** - Find what internal APIs a site uses
@@ -172,6 +186,7 @@ Only XHR/fetch requests and URLs containing `/api/`, `/graphql/`, or `/rest/` ar
 - **AI agent tooling** - Generate API catalogs that agents can call
 - **Reverse engineering** - Understand how a web app communicates with its backend
 - **Monitoring** - Track what APIs are called during specific user flows
+- **Direct HTTP fallback** - Use saved sessions for API calls when browser capture is blocked
 
 ## License
 
